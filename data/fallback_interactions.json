@@ -1,0 +1,107 @@
+[
+  {
+    "drug_a": "Warfarin",
+    "drug_b": "Aspirin",
+    "severity": "high",
+    "mechanism": "Additive pharmacodynamic effect increasing antiplatelet and anticoagulant action",
+    "clinical_recommendation": "Avoid concurrent use if possible; if necessary monitor PT/INR and signs of bleeding closely"
+  },
+  {
+    "drug_a": "Sildenafil",
+    "drug_b": "Nitroglycerin",
+    "severity": "high",
+    "mechanism": "Synergistic nitric oxide/cGMP-mediated vasodilation leading to severe life-threatening hypotension",
+    "clinical_recommendation": "Contraindicated; avoid co-administration within 24-48 hours of PDE5 inhibitor use"
+  },
+  {
+    "drug_a": "Tramadol",
+    "drug_b": "Fluoxetine",
+    "severity": "high",
+    "mechanism": "Combined serotonergic accumulation and CYP2D6 metabolic inhibition increasing serotonin syndrome and seizure risks",
+    "clinical_recommendation": "Avoid combination; select a non-serotonergic analgesic or non-inhibitory antidepressant"
+  },
+  {
+    "drug_a": "Potassium chloride",
+    "drug_b": "Spironolactone",
+    "severity": "high",
+    "mechanism": "Additive potassium-sparing and exogenous supplementation effects inducing severe hyperkalemia",
+    "clinical_recommendation": "Avoid concurrent use unless actively indicated; monitor serum potassium and ECG regularly"
+  },
+  {
+    "drug_a": "Simvastatin",
+    "drug_b": "Amiodarone",
+    "severity": "high",
+    "mechanism": "Amiodarone inhibits CYP3A4 metabolism increasing simvastatin exposure and risk of rhabdomyolysis",
+    "clinical_recommendation": "Do not exceed simvastatin 20mg daily; consider switching to a non-CYP3A4 metabolized statin"
+  },
+  {
+    "drug_a": "Amlodipine",
+    "drug_b": "Clarithromycin",
+    "severity": "medium",
+    "mechanism": "Clarithromycin inhibits CYP3A4 reducing amlodipine metabolism and causing severe hypotension",
+    "clinical_recommendation": "Monitor blood pressure closely; consider an alternative antibiotic or reduce amlodipine dose"
+  },
+  {
+    "drug_a": "Ibuprofen",
+    "drug_b": "Lisinopril",
+    "severity": "medium",
+    "mechanism": "NSAID-induced prostaglandin inhibition impairs renal afferent vasodilation counteracting ACE inhibitor effects",
+    "clinical_recommendation": "Monitor blood pressure and renal function; avoid prolonged concurrent use especially in elderly"
+  },
+  {
+    "drug_a": "Metformin",
+    "drug_b": "Contrast media",
+    "severity": "medium",
+    "mechanism": "Contrast-induced acute kidney injury leads to metformin accumulation and lactic acidosis",
+    "clinical_recommendation": "Withhold metformin prior to or at the time of procedure and resume 48 hours later after verifying normal renal function"
+  },
+  {
+    "drug_a": "Alprazolam",
+    "drug_b": "Oxycodone",
+    "severity": "high",
+    "mechanism": "Additive central nervous system and respiratory depression via concurrent GABA and mu-opioid receptor activation",
+    "clinical_recommendation": "Avoid co-prescribing; if unavoidable prescribe lowest effective doses and monitor for respiratory depression"
+  },
+  {
+    "drug_a": "Ciprofloxacin",
+    "drug_b": "Tizanidine",
+    "severity": "high",
+    "mechanism": "Potent CYP1A2 inhibition by ciprofloxacin leads to dramatically elevated tizanidine levels and profound hypotension",
+    "clinical_recommendation": "Contraindicated; avoid concurrent use and select alternative therapeutic agents"
+  },
+  {
+    "drug_a": "Methotrexate",
+    "drug_b": "Amoxicillin",
+    "severity": "medium",
+    "mechanism": "Penicillins compete for renal tubular secretion increasing methotrexate levels and bone marrow toxicity",
+    "clinical_recommendation": "Monitor complete blood count and methotrexate levels closely; consider alternative antibiotics"
+  },
+  {
+    "drug_a": "Levofloxacin",
+    "drug_b": "Ondansetron",
+    "severity": "medium",
+    "mechanism": "Additive prolongation of the QT interval increasing the risk of Torsades de Pointes",
+    "clinical_recommendation": "Monitor ECG for QTc prolongation; correct underlying electrolyte imbalances before initiation"
+  },
+  {
+    "drug_a": "Omeprazole",
+    "drug_b": "Clopidogrel",
+    "severity": "medium",
+    "mechanism": "Competitive CYP2C19 inhibition by omeprazole reduces the metabolic activation of clopidogrel",
+    "clinical_recommendation": "Avoid omeprazole; utilize an alternative proton pump inhibitor with lower CYP2C19 inhibition like pantoprazole"
+  },
+  {
+    "drug_a": "Sertraline",
+    "drug_b": "Ibuprofen",
+    "severity": "low",
+    "mechanism": "Serotonin reuptake inhibition impairs platelet aggregation compounding NSAID-induced mucosal bleeding risk",
+    "clinical_recommendation": "Monitor for signs of gastrointestinal bleeding; consider gastroprotective therapy if used long-term"
+  },
+  {
+    "drug_a": "Atorvastatin",
+    "drug_b": "Fluconazole",
+    "severity": "low",
+    "mechanism": "Moderate CYP3A4 inhibition by fluconazole mildly increases atorvastatin plasma concentration",
+    "clinical_recommendation": "Monitor for unexplained muscle pain or weakness; temporarily hold or decrease statin dose if high-dose azole is required"
+  }
+]
