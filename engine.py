@@ -1,4 +1,5 @@
 from itertools import combinations
+import requests
 import json
 
 DRUG_CLASS_MAP = {
@@ -53,3 +54,69 @@ def check_allergies(medicines: list[str], known_allergies: list[str]) -> list:
                         })
 
     return matches
+
+def parse_llm_response(content: str) -> dict:
+    try:
+        content = content.strip()
+        #removing md output if any by the llm
+        if content.startswith("```"):
+            content = content.split("```")[1]
+            if content.startswith("json"):
+                content = content[4:]
+
+        #finding { } brackets in json to extract pure json
+
+        start = content.index("{")
+        end = content.rindex("}")+1
+        content = content[start:end]
+
+        #loading content
+        data = json.loads(content)
+
+        #ensuring required fields atleast contain default values
+        data.setdefault("interactions",[])
+        data.setdefault("allergy_alerts",[])
+        data.setdefault("requires_doctor_review",True)
+
+        return data
+    
+    except Exception:
+        return {
+            "interactions": [],
+            "allergy_alerts": [],
+            "requires_doctor_review": True
+        }
+    
+def check_interactions_llm(medicines: list[str], patient_history) -> dict:
+    with open("prompts/system_prompt.txt", "r") as f:
+        system_prompt = f.read()
+
+    user_message = json.dumps({
+        "medicines": medicines,
+        "patient_history": {
+            "age": patient_history.age,
+            "weight": patient_history.weight,
+            "known_allergies": patient_history.known_allergies,
+            "current_medications": patient_history.current_medications,
+            "conditions": patient_history.conditions
+        }
+    }, indent=2)
+
+    response = requests.post(
+        "http://localhost:11434/api/chat",
+        json={
+            "model": "qwen2.5",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            "stream": False
+        },
+        timeout = 30
+    )
+
+    response.raise_for_status()
+
+    content = response.json()["message"]["content"]
+    return parse_llm_response(content)
+

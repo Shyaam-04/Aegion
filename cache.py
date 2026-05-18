@@ -13,11 +13,16 @@ def make_cache_key(medicines: list[str], current_medications: list[str])-> str:
     return key
 
 def get_from_cache(key: str):
-    if key in cache_store and (time.time() - cache_store[key]["timestamp"])<TTL:
-        return cache_store[key]["data"]
-    else:
+    if key in cache_store:
+        cache_entry = cache_store[key]
+
+        if (time.time() - cache_entry["timestamp"]) < TTL:
+            return cache_entry["data"]
+
+        # expired cache
         del cache_store[key]
-        return None
+
+    return None
 
 
 def save_to_cache(key: str, value: dict):
