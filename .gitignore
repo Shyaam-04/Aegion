@@ -1,0 +1,36 @@
+# --- FRONTEND (React/Vite) ---
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/logs
+frontend/*.log
+
+# --- BACKEND (Python) ---
+backend/venv/
+backend/env/
+backend/ENV/
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/*.sqlite3
+backend/*.db
+backend/evodoc.db
+
+# --- ENVIRONMENT & SECRETS ---
+.env
+.env.local
+backend/.env
+
+# --- EDITOR & SYSTEM ---
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
