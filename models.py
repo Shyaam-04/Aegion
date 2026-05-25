@@ -9,6 +9,7 @@ class PatientHistory(BaseModel):
     conditions: list[str]
 
 class DrugCheckRequest(BaseModel):
+    doctor_id: str
     medicines: list[str]
     patient_history: PatientHistory
 

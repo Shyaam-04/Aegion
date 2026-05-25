@@ -1,8 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from models import DrugCheckRequest, DrugCheckResponse
 from engine import load_fallback_data, check_interactions_fallback, check_allergies, check_interactions_llm
 from cache import make_cache_key, get_from_cache, save_to_cache
 import time
+from database import engine, get_db
+from db_models import Check
+from sqlalchemy.orm import Session
+import json
+from database import Base
+
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 @app.get("/health")
@@ -12,7 +19,7 @@ def home():
     }
 
 @app.post("/check-drugs")
-def check_drugs(request: DrugCheckRequest):
+def check_drugs(request: DrugCheckRequest, db: Session = Depends(get_db)):
     start_time = time.time()
 
     #checking cache
@@ -28,7 +35,6 @@ def check_drugs(request: DrugCheckRequest):
         source = "llm"
         llm_result = check_interactions_llm(request.medicines, request.patient_history)
         interactions = llm_result.get("interactions",[])
-        allergies = llm_result.get("allergy_alerts",[])
         requires_doctor_review = llm_result.get("requires_doctor_review", True)
 
     except Exception:
@@ -36,8 +42,12 @@ def check_drugs(request: DrugCheckRequest):
         source = "fallback"
         fallback_data = load_fallback_data()
         interactions = check_interactions_fallback(request.medicines, fallback_data)
-        allergies = check_allergies(request.medicines, request.patient_history.known_allergies)
         requires_doctor_review = any(i.get("severity") == "high" for i in interactions)
+
+    allergies = check_allergies(
+    request.medicines,
+    request.patient_history.known_allergies
+    )
         
 
     #calculation of overall_risk_level
@@ -50,11 +60,11 @@ def check_drugs(request: DrugCheckRequest):
         overall_risk_level = "low"
 
     # deterministic uncertainty escalation
-    if any(i.get("source_confidence") == "low" for i in interactions):
-        requires_doctor_review = True
-    
-    if any(i.get("source_confidence") == "high" for i in interactions):
-        requires_doctor_review = False
+    requires_doctor_review = (
+    overall_risk_level == "high"
+    or any(i.get("source_confidence") == "low" for i in interactions)
+    or len(allergies) > 0
+    )
 
     #safe_to_prescribe calculation
     safe_to_prescribe = len(interactions) == 0 and len(allergies) == 0
@@ -75,5 +85,74 @@ def check_drugs(request: DrugCheckRequest):
         processing_time_ms = response_time
     )
     save_to_cache(cache_key, response.model_dump())
+
+    #saving to database
+    check_record = Check(
+        doctor_id = request.doctor_id,
+        medicines = json.dumps(request.medicines),
+        patient_age = request.patient_history.age,
+        patient_weight = request.patient_history.weight,
+        patient_conditions = json.dumps(request.patient_history.conditions),
+        known_allergies = json.dumps(request.patient_history.known_allergies),
+        current_medications = json.dumps(request.patient_history.current_medications),
+        risk_level = overall_risk_level,
+        safe_to_prescribe = safe_to_prescribe,
+        requires_doctor_review = requires_doctor_review,
+        source = source,
+        processing_time_ms = response_time
+    )
+    db.add(check_record)
+    db.commit()
+
     return response
 
+#getting history of last 20 patients
+@app.get("/history")
+def get_history(db: Session = Depends(get_db)):
+    checks = db.query(Check)\
+        .order_by(Check.timestamp.desc())\
+        .limit(20)\
+        .all()
+    
+    result = []
+    for check in checks:
+        result.append({
+            "id": check.id,
+            "doctor_id": check.doctor_id,
+            "medicines": json.loads(check.medicines),
+            "risk_level": check.risk_level,
+            "safe_to_prescribe": check.safe_to_prescribe,
+            "requires_doctor_review": check.requires_doctor_review,
+            "source": check.source,
+            "processing_time_ms": check.processing_time_ms,
+            "timestamp": check.timestamp
+        })
+    
+    return {"checks": result, "total": len(result)}
+
+
+#making the stats dashboard information
+@app.get("/stats")
+def get_stats(db: Session = Depends(get_db)):
+    total = db.query(Check).count()
+    high_risk = db.query(Check).filter(Check.risk_level == "high").count()
+    medium_risk = db.query(Check).filter(Check.risk_level == "medium").count()
+    low_risk = db.query(Check).filter(Check.risk_level == "low").count()
+    safe = db.query(Check).filter(Check.safe_to_prescribe == True).count()
+    llm_count = db.query(Check).filter(Check.source == "llm").count()
+    fallback_count = db.query(Check).filter(Check.source == "fallback").count()
+
+    return {
+        "total_checks": total,
+        "risk_breakdown": {
+            "high": high_risk,
+            "medium": medium_risk,
+            "low": low_risk
+        },
+        "safe_to_prescribe": safe,
+        "unsafe_to_prescribe": total - safe,
+        "source_breakdown": {
+            "llm": llm_count,
+            "fallback": fallback_count
+        }
+    }
