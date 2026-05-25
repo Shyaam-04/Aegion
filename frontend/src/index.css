@@ -1,0 +1,342 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════
+   THEME SYSTEM — CSS Custom Properties
+   ═══════════════════════════════════════════ */
+
+:root {
+  --surface-0: #F1F5F9;
+  --surface-1: #FFFFFF;
+  --surface-2: #E2E8F0;
+  --surface-3: #CBD5E1;
+  --border: #CBD5E1;
+  --border-hover: #94A3B8;
+  --text-1: #000000;
+  --text-2: #334155;
+  --text-3: #64748B;
+  --overlay: rgba(15, 23, 42, 0.7);
+  --card-glass: rgba(255, 255, 255, 0.85);
+  --input-bg: #FFFFFF;
+}
+
+.dark {
+  --surface-0: #0B0D14;
+  --surface-1: #12141D;
+  --surface-2: #1A1D27;
+  --surface-3: #22252F;
+  --border: #2A2D3A;
+  --border-hover: #3D4155;
+  --text-1: #F1F5F9;
+  --text-2: #94A3B8;
+  --text-3: #64748B;
+  --overlay: rgba(0, 0, 0, 0.7);
+  --card-glass: rgba(18, 20, 29, 0.8);
+  --input-bg: #1A1D27;
+}
+
+/* ═══════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--surface-0);
+  color: var(--text-1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   BACKGROUND GRID PATTERN
+   ═══════════════════════════════════════════ */
+
+.bg-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--border) 0.5px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.dark .bg-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 0.5px, transparent 0);
+}
+
+/* ═══════════════════════════════════════════
+   GLASSMORPHIC CARD
+   ═══════════════════════════════════════════ */
+
+.card-glass {
+  background: var(--card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-glass:hover {
+  border-color: var(--border-hover);
+}
+
+/* ═══════════════════════════════════════════
+   GRADIENT BORDER EFFECT
+   ═══════════════════════════════════════════ */
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(99, 102, 241, 0.05),
+    rgba(99, 102, 241, 0.15)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   SEVERITY ACCENTS
+   ═══════════════════════════════════════════ */
+
+.severity-bar-high {
+  border-left: 3px solid #EF4444;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.06) 0%, transparent 40%);
+}
+
+.severity-bar-medium {
+  border-left: 3px solid #F59E0B;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0%, transparent 40%);
+}
+
+.severity-bar-low {
+  border-left: 3px solid #10B981;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+}
+
+/* ═══════════════════════════════════════════
+   RISK PULSE DOT
+   ═══════════════════════════════════════════ */
+
+.pulse-dot {
+  position: relative;
+}
+
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.pulse-dot-high::after { background: rgba(239, 68, 68, 0.4); }
+.pulse-dot-medium::after { background: rgba(245, 158, 11, 0.4); }
+.pulse-dot-low::after { background: rgba(16, 185, 129, 0.4); }
+
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   ECG / HEARTBEAT LOADING LINE
+   ═══════════════════════════════════════════ */
+
+.ecg-line {
+  width: 200px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ecg-line svg {
+  position: absolute;
+  animation: ecgScroll 2s linear infinite;
+}
+
+@keyframes ecgScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════════
+   OVERLAY BACKDROP
+   ═══════════════════════════════════════════ */
+
+.overlay-backdrop {
+  background: var(--overlay);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* ═══════════════════════════════════════════
+   INPUT STYLES
+   ═══════════════════════════════════════════ */
+
+.input-base {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-base:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-base::placeholder {
+  color: var(--text-3);
+}
+
+/* ═══════════════════════════════════════════
+   STAGGER ANIMATION UTILITIES
+   ═══════════════════════════════════════════ */
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* ═══════════════════════════════════════════
+   CONFIDENCE BAR
+   ═══════════════════════════════════════════ */
+
+.confidence-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════
+   RISK RING (for overlay hero)
+   ═══════════════════════════════════════════ */
+
+.risk-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.risk-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  opacity: 0.2;
+}
+
+.risk-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  animation: pulseRing 2.5s ease-out infinite;
+  background: currentColor;
+  opacity: 0.1;
+}
+
+/* ═══════════════════════════════════════════
+   STAT BAR SEGMENTS
+   ═══════════════════════════════════════════ */
+
+.stat-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.stat-bar-segment {
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   BUTTON STYLES
+   ═══════════════════════════════════════════ */
+
+.btn-primary {
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
+  color: white;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

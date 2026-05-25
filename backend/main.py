@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from models import DrugCheckRequest, DrugCheckResponse
 from engine import load_fallback_data, check_interactions_fallback, check_allergies, check_interactions_llm
 from cache import make_cache_key, get_from_cache, save_to_cache
@@ -11,6 +12,14 @@ from database import Base
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ["*"],
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"]
+)
 
 @app.get("/health")
 def home():
