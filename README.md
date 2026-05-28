@@ -19,7 +19,9 @@ Built using local LLM inference with Ollama and Qwen 2.5, the system provides ex
 ![Qwen2.5](https://img.shields.io/badge/Qwen_2.5-7A42F4?style=for-the-badge)
 ![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=for-the-badge&logo=pydantic&logoColor=white)
 
-**[🎥 Watch the Live Demo Video Here](YOUR_VIDEO_LINK_HERE)**
+## Demo Video
+
+[![Watch Demo](assets/screenshots/dashboard.png)](assets/videos/Aegion-recording.mov)
 
 ---
 

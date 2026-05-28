@@ -1,6 +1,6 @@
 import { User, Scan, Weight, Heart } from 'lucide-react'
 import MedicineTagInput from './MedicineTagInput'
-import TagInput from './TagInput'
+import { searchConditions } from '../../constants/conditions'
 
 export default function PrescriptionForm({ formData, setFormData, onAnalyze, loading }) {
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }))
@@ -44,6 +44,7 @@ export default function PrescriptionForm({ formData, setFormData, onAnalyze, loa
           <MedicineTagInput
             value={formData.medicines}
             onChange={(v) => update('medicines', v)}
+            allowCustom={true}
           />
 
           {/* Patient Details — Two Column */}
@@ -91,11 +92,13 @@ export default function PrescriptionForm({ formData, setFormData, onAnalyze, loa
           />
 
           {/* Conditions */}
-          <TagInput
+          <MedicineTagInput
             label="Conditions"
             value={formData.patient_history.conditions}
             onChange={(v) => updateHistory('conditions', v)}
-            placeholder="e.g. Diabetes"
+            placeholder="Search conditions…"
+            allowCustom={true}
+            searchFn={searchConditions}
           />
 
           {/* Submit */}

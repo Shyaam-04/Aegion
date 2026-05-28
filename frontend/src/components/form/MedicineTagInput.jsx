@@ -7,7 +7,8 @@ export default function MedicineTagInput({
   onChange,
   label = 'Medicines to Prescribe',
   placeholder = 'Search medicines…',
-  allowCustom = false
+  allowCustom = false,
+  searchFn = null
 }) {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -18,15 +19,17 @@ export default function MedicineTagInput({
 
   useEffect(() => {
     if (query.length >= 1) {
-      const results = searchMedicines(query, value)
+      const fn = searchFn ?? searchMedicines
+      const results = fn(query, value)
       setSuggestions(results)
       setHighlightIdx(0)
-      setOpen(results.length > 0)
+      // Keep the dropdown open even with no suggestions when allowCustom is true
+      setOpen(results.length > 0 || allowCustom)
     } else {
       setSuggestions([])
       setOpen(false)
     }
-  }, [query, value])
+  }, [query, value, allowCustom, searchFn])
 
   const addMedicine = (med) => {
     if (!value.includes(med)) {
@@ -145,6 +148,16 @@ export default function MedicineTagInput({
               {highlightMatch(med, query)}
             </button>
           ))}
+          {/* Custom entry hint — shown when no exact match exists in the list */}
+          {allowCustom && query.trim() && !suggestions.some(m => m.toLowerCase() === query.trim().toLowerCase()) && (
+            <button
+              onMouseDown={(e) => { e.preventDefault(); addMedicine(query.trim()) }}
+              className="w-full text-left px-3 py-2 text-sm text-txt-3 hover:bg-surface-2 border-t border-border/50 flex items-center gap-2 italic"
+            >
+              <span className="text-accent font-semibold not-italic">+</span>
+              Add &ldquo;{query.trim()}&rdquo; as custom
+            </button>
+          )}
         </div>
       )}
     </div>
