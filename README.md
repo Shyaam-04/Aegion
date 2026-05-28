@@ -238,12 +238,12 @@ The frontend is integrated directly into the FastAPI application, enabling singl
 # Screenshots & Media
 
 ## Dashboard Overview
-*(Replace this text with your screenshot: `![Dashboard](assets/screenshots/dashboard.png)`)*
+![Dashboard](assets/screenshots/dashboard.png)
 
 ---
 
 ## Clinical Interaction Analysis
-*(Replace this text with your screenshot: `![Analysis Modal](assets/screenshots/analysis.png)`)*
+![Analysis Modal](assets/screenshots/analysis.png)
 
 ---
 
