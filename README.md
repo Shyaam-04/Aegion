@@ -21,7 +21,7 @@ Built using local LLM inference with Ollama and Qwen 2.5, the system provides ex
 
 ## Demo Video
 
-[![Watch Demo](assets/screenshots/dashboard.png)](assets/videos/Aegion-recording.mov)
+[![Watch Demo](assets/screenshots/dashboard.png)](assets/videos/Aegion-recording.mp4)
 
 ---
 
