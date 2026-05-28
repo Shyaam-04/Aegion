@@ -72,11 +72,17 @@ def check_drugs(request: DrugCheckRequest, db: Session = Depends(get_db)):
         overall_risk_level = "low"
 
     # deterministic uncertainty escalation
+    # requires_doctor_review = (
+    # overall_risk_level == "high"
+    # or any(i.get("source_confidence") == "low" for i in interactions)
+    # or len(allergies) > 0
+    # )
+    #deterministic uncertainity escalation
     requires_doctor_review = (
-    overall_risk_level == "high"
-    or any(i.get("source_confidence") == "low" for i in interactions)
-    or len(allergies) > 0
+        requires_doctor_review  # <-- Keep the LLM's original decision!
+        or any(i.get("source_confidence") == "low" for i in interactions)
     )
+
 
     #safe_to_prescribe calculation
     safe_to_prescribe = len(interactions) == 0 and len(allergies) == 0
@@ -187,4 +193,4 @@ if os.path.exists(FRONTEND_DIST_DIR):
     def serve_frontend():
         return FileResponse(os.path.join(FRONTEND_DIST_DIR, "index.html"))
 else:
-    print(f"Warning: Frontend distribution directory not found at {FRONTEND_DIST_DIR}. Run 'npm run build' inside frontend/ to serve the UI.")
+    print(f"Warning: Frontend distribution directory not found at {FRONTEND_DIST_DIR}. Run 'npm run build' inside frontend/ to serve the UI.")

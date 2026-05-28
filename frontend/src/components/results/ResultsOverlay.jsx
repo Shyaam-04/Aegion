@@ -147,12 +147,22 @@ export default function ResultsOverlay({ result, onClose }) {
             </section>
           )}
 
-          {/* No Issues */}
+          {/* No Issues OR Missing History Details */}
           {interactions.length === 0 && allergy_alerts.length === 0 && (
-            <div className="card-glass rounded-xl p-8 text-center animate-slide-up">
-              <ShieldCheck className="w-12 h-12 text-risk-low mx-auto mb-3" />
-              <h3 className="text-sm font-semibold text-txt-1 mb-1">No Interactions Detected</h3>
-              <p className="text-sm text-txt-3">The prescribed medicines appear safe based on available data.</p>
+            <div className={`card-glass rounded-xl p-8 text-center animate-slide-up ${!safe_to_prescribe ? 'border-risk-high/30 bg-risk-high/5' : ''}`}>
+              {!safe_to_prescribe ? (
+                <>
+                  <AlertTriangle className="w-12 h-12 text-risk-medium mx-auto mb-3 opacity-80" />
+                  <h3 className="text-sm font-semibold text-txt-1 mb-1">Details Unavailable</h3>
+                  <p className="text-sm text-txt-3">This is an older check from before detailed interactions were recorded in the database. It was flagged as high risk.</p>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck className="w-12 h-12 text-risk-low mx-auto mb-3" />
+                  <h3 className="text-sm font-semibold text-txt-1 mb-1">No Interactions Detected</h3>
+                  <p className="text-sm text-txt-3">The prescribed medicines appear safe based on available data.</p>
+                </>
+              )}
             </div>
           )}
 

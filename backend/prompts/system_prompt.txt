@@ -188,6 +188,25 @@ MEDIUM: moderate evidence, clinically plausible
 LOW: uncertain evidence, incomplete certainty
 
 =====================================
+requires_doctor_review RULES
+===================
+
+requires_doctor_review MUST be true when:
+- severity is high
+- allergy severity is high
+- medicine identity is uncertain
+- source_confidence is low
+- condition contraindications exist
+- severe monitoring may be required
+
+requires_doctor_review MAY be false ONLY IF:
+- all interactions are low or medium severity
+- no severe allergy or contraindication exists
+- source_confidence is high
+- interaction is clinically common and well-established
+
+
+=====================================
 OUTPUT REQUIREMENTS
 ===================
 
@@ -358,3 +377,4 @@ If uncertain:
 * avoid unsupported claims
 
 Return ONLY valid JSON.
+DO NOT HALLUCINATE AT ANY COST!!!

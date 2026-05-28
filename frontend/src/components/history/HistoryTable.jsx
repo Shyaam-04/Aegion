@@ -1,7 +1,7 @@
 import { Clock, FileText } from 'lucide-react'
 import RiskBadge from '../results/RiskBadge'
 
-export default function HistoryTable({ history }) {
+export default function HistoryTable({ history, onHistoryClick }) {
   if (!history || history.length === 0) {
     return (
       <div className="card-glass rounded-xl p-8 text-center">
@@ -34,7 +34,8 @@ export default function HistoryTable({ history }) {
         {history.map((check, i) => (
           <div
             key={check.id || i}
-            className={`grid grid-cols-1 sm:grid-cols-[1fr_2fr_auto_auto_auto_auto] gap-2 sm:gap-4 px-4 py-3 items-center transition-colors hover:bg-surface-2/50 ${
+            onClick={() => onHistoryClick && onHistoryClick(check)}
+            className={`grid grid-cols-1 sm:grid-cols-[1fr_2fr_auto_auto_auto_auto] gap-2 sm:gap-4 px-4 py-3 items-center transition-colors hover:bg-surface-2/50 cursor-pointer ${
               i !== history.length - 1 ? 'border-b border-border/50' : ''
             }`}
           >

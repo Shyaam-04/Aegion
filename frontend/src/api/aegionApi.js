@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = typeof window !== 'undefined' && window.location.origin === 'http://localhost:5173'
+  ? 'http://localhost:8000'
+  : (typeof window !== 'undefined' ? window.location.origin : '');
 
 export async function checkDrugs(payload) {
   const res = await fetch(`${BASE_URL}/check-drugs`, {

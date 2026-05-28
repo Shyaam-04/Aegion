@@ -103,7 +103,13 @@ export default function App() {
             {/* Right Panel — Stats + History */}
             <div className="flex-1 min-w-0">
               <StatsPanel stats={stats} />
-              <HistoryTable history={history} />
+              <HistoryTable 
+                history={history} 
+                onHistoryClick={(check) => {
+                  setResult(check)
+                  setOverlayOpen(true)
+                }}
+              />
             </div>
           </div>
         </main>
