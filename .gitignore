@@ -8,6 +8,7 @@ frontend/*.log
 
 # --- BACKEND (Python) ---
 backend/venv/
+backend/.venv/
 backend/env/
 backend/ENV/
 backend/__pycache__/
@@ -16,8 +17,8 @@ backend/*$py.class
 backend/.pytest_cache/
 backend/.coverage
 backend/htmlcov/
-backend/*.sqlite3
 backend/*.db
+backend/data/drug-label-0001-of-0013.json
 backend/evodoc.db
 
 # --- ENVIRONMENT & SECRETS ---
