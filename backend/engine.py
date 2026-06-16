@@ -133,7 +133,7 @@ def check_interactions_llm(medicines: list[str], patient_history) -> dict:
             ],
             "stream": False
         },
-        timeout=120
+        timeout=30
     )
 
     response.raise_for_status()
