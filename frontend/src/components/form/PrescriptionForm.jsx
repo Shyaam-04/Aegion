@@ -1,6 +1,6 @@
 import { User, Scan, Weight, Heart } from 'lucide-react'
 import MedicineTagInput from './MedicineTagInput'
-import { searchConditions } from '../../constants/conditions'
+import { searchConditions, addCustomCondition } from '../../constants/conditions'
 
 export default function PrescriptionForm({ formData, setFormData, onAnalyze, loading }) {
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }))
@@ -99,6 +99,7 @@ export default function PrescriptionForm({ formData, setFormData, onAnalyze, loa
             placeholder="Search conditions…"
             allowCustom={true}
             searchFn={searchConditions}
+            addCustomFn={addCustomCondition}
           />
 
           {/* Submit */}

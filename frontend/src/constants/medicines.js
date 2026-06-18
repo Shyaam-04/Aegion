@@ -1,5 +1,17 @@
 // Common prescribed drugs for autocomplete — curated for clinical relevance
+const getCustomMedicines = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      return JSON.parse(localStorage.getItem('custom_medicines') || '[]')
+    } catch (e) {
+      return []
+    }
+  }
+  return []
+}
+
 export const MEDICINES = [
+  ...getCustomMedicines(),
   // Anticoagulants & Antiplatelets
   'Warfarin', 'Heparin', 'Enoxaparin', 'Aspirin', 'Clopidogrel', 'Rivaroxaban', 'Apixaban', 'Dabigatran', 'Ticagrelor',
   // Analgesics & NSAIDs
@@ -44,4 +56,21 @@ export function searchMedicines(query, exclude = []) {
       return a.localeCompare(b)
     })
     .slice(0, 8)
+}
+
+export function addCustomMedicine(med) {
+  if (med && !MEDICINES.includes(med)) {
+    MEDICINES.push(med)
+    if (typeof window !== 'undefined') {
+      try {
+        const currentCustom = JSON.parse(localStorage.getItem('custom_medicines') || '[]')
+        if (!currentCustom.includes(med)) {
+          currentCustom.push(med)
+          localStorage.setItem('custom_medicines', JSON.stringify(currentCustom))
+        }
+      } catch (e) {
+        console.error('Failed to save custom medicine', e)
+      }
+    }
+  }
 }

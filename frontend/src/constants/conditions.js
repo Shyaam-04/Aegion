@@ -1,5 +1,17 @@
 // Common medical conditions for autocomplete — curated for clinical relevance
+const getCustomConditions = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      return JSON.parse(localStorage.getItem('custom_conditions') || '[]')
+    } catch (e) {
+      return []
+    }
+  }
+  return []
+}
+
 export const CONDITIONS = [
+  ...getCustomConditions(),
   // Cardiovascular
   'Hypertension', 'Heart Failure', 'Coronary Artery Disease', 'Atrial Fibrillation', 'Angina',
   'Myocardial Infarction', 'Peripheral Artery Disease', 'Deep Vein Thrombosis', 'Pulmonary Embolism',
@@ -50,4 +62,21 @@ export function searchConditions(query, exclude = []) {
       return a.localeCompare(b)
     })
     .slice(0, 8)
+}
+
+export function addCustomCondition(condition) {
+  if (condition && !CONDITIONS.includes(condition)) {
+    CONDITIONS.push(condition)
+    if (typeof window !== 'undefined') {
+      try {
+        const currentCustom = JSON.parse(localStorage.getItem('custom_conditions') || '[]')
+        if (!currentCustom.includes(condition)) {
+          currentCustom.push(condition)
+          localStorage.setItem('custom_conditions', JSON.stringify(currentCustom))
+        }
+      } catch (e) {
+        console.error('Failed to save custom condition', e)
+      }
+    }
+  }
 }

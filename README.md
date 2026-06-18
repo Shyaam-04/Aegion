@@ -41,7 +41,7 @@ It runs entirely on your local machine using Ollama and Qwen 2.5 — no cloud, n
 
 ## Demo Video
 
-[![Watch Demo](assets/screenshots/dashboard.png)](https://youtu.be/zqVsmtyI1NQ)
+[![Watch Demo](assets/screenshots/dashboard.png)](https://youtu.be/sHV2bOIawo0)
 
 ---
 

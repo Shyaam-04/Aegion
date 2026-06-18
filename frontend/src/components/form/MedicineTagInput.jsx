@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { X, ChevronDown, Search } from 'lucide-react'
-import { searchMedicines } from '../../constants/medicines'
+import { searchMedicines, addCustomMedicine } from '../../constants/medicines'
 
 export default function MedicineTagInput({
   value = [],
@@ -8,7 +8,8 @@ export default function MedicineTagInput({
   label = 'Medicines to Prescribe',
   placeholder = 'Search medicines…',
   allowCustom = false,
-  searchFn = null
+  searchFn = null,
+  addCustomFn = null
 }) {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -35,6 +36,11 @@ export default function MedicineTagInput({
     if (!value.includes(med)) {
       onChange([...value, med])
     }
+    
+    // Add to custom list to persist for future autocompletes
+    const adder = addCustomFn ?? addCustomMedicine;
+    adder(med);
+
     setQuery('')
     setOpen(false)
     inputRef.current?.focus()
